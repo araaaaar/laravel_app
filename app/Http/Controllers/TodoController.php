@@ -59,7 +59,7 @@ class TodoController extends Controller
         $input['user_id'] = Auth::id();  // 追記
         // ＊fill():代入されたくないカラムや捏造されたカラムに不正に代入されるのを防ぐ
         $this->todo->fill($input)->save();
-        return redirect()->to('todo');
+        return redirect()->route('todo.index');
     }
 
     /**
@@ -106,7 +106,7 @@ class TodoController extends Controller
         // $record = $this->todo->find($id);
         // $record->fill($input);
         // $record->save();
-        return redirect()->to('todo');
+        return redirect()->route('todo.index');
     }
 
     /**
@@ -118,6 +118,6 @@ class TodoController extends Controller
     public function destroy($id)
     {
         $this->todo->find($id)->delete();
-        return redirect()->to('todo');
+        return redirect()->route('todo.index');
     }
 }
