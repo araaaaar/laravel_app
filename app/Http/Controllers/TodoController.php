@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Todo;
 use App\User;
-use Auth;  // 追記　ForgotPasswordController.phpファイルに定義されてる名前空間
+use Auth;
 
 class TodoController extends Controller
 {
@@ -19,26 +19,18 @@ class TodoController extends Controller
 
     public function __construct(Todo $instanceClass, User $UserinstanceClass)
     {
-        // middlewareのauthは、ログイン状態のチェックを行うもの
-        // ログイン処理は、Illuminate\Foundation\AuthのAuthenticatesUsersを調査すべし
-        // ユーザーが認証されていなければ、ユーザーをログインページへリダイレクトするミドルウェアも存在
-        $this->middleware('auth');  // 追記
+        $this->middleware('auth');
         $this->todo = $instanceClass;
         $this->user = $UserinstanceClass;
     }
 
     public function index() 
     {
-        // ＊collectionクラスじゃなくて✖、todo〇クラスのallメソッドを使用、返り値がcollectionオブジェクトなだけ
-        // 認証されたユーザーのtodoインスタンス取得
-        $todos = $this->todo->getByUserId(Auth::id());  // 追記 in Todo.php
-        // dd($this->todo);
-        $user = $this->user->getUserByUserId(Auth::id());  // 追記 in User.php
+        $todos = $this->todo->getByUserId(Auth::id());
+        $user = $this->user->getUserByUserId(Auth::id());
 
 
-        // dd($todos);collectionインスタンス
         return view('todo.index', compact('todos', 'user'));
-        // return view('todo.index', ['todos' => $this->todo->all()]);
     }
 
     /**
@@ -60,10 +52,7 @@ class TodoController extends Controller
     public function store(Request $request)
     {
         $input = $request->all();
-        // dd($input);
-        // 細かくバリデーションで確認したいってなったらここに記載！！
-        $input['user_id'] = Auth::id();  // 追記
-        // ＊fill():代入されたくないカラムや捏造されたカラムに不正に代入されるのを防ぐ
+        $input['user_id'] = Auth::id();
         $this->todo->fill($input)->save();
         return redirect()->route('todo.index');
     }
@@ -88,8 +77,6 @@ class TodoController extends Controller
     public function edit($id)
     {
         $todo = $this->todo->find($id);
-        // dd($todo);
-
         return view('todo.edit', compact('todo'));
     }
 
@@ -104,11 +91,7 @@ class TodoController extends Controller
     {
 
         $input = $request->all();
-        // dd($input);
-
-        // ＊sql文：UPDATE todos SET todo = '値' WHERE id = ?
         $this->todo->find($id)->fill($input)->save();
-        // ＊一文ずつに分ける：fill()で$recordに代入することになるから最後はsave()のみで大丈夫
         // $record = $this->todo->find($id);
         // $record->fill($input);
         // $record->save();
