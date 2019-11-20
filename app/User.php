@@ -27,4 +27,10 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    // idに紐づいたデータ取得
+    public function getUserByUserId($id)
+    {
+        return $this->where('id', $id)->first();
+    }
 }

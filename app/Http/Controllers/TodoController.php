@@ -3,6 +3,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Todo;
+use App\User;
 use Auth;  // 追記　ForgotPasswordController.phpファイルに定義されてる名前空間
 
 class TodoController extends Controller
@@ -14,13 +15,16 @@ class TodoController extends Controller
      * @return \Illuminate\Http\Response
      */
     private $todo;
-    public function __construct(Todo $instanceClass)
+    private $user;
+
+    public function __construct(Todo $instanceClass, User $UserinstanceClass)
     {
         // middlewareのauthは、ログイン状態のチェックを行うもの
         // ログイン処理は、Illuminate\Foundation\AuthのAuthenticatesUsersを調査すべし
         // ユーザーが認証されていなければ、ユーザーをログインページへリダイレクトするミドルウェアも存在
         $this->middleware('auth');  // 追記
         $this->todo = $instanceClass;
+        $this->user = $UserinstanceClass;
     }
 
     public function index() 
@@ -29,9 +33,11 @@ class TodoController extends Controller
         // 認証されたユーザーのtodoインスタンス取得
         $todos = $this->todo->getByUserId(Auth::id());  // 追記 in Todo.php
         // dd($this->todo);
+        $user = $this->user->getUserByUserId(Auth::id());  // 追記 in User.php
+
 
         // dd($todos);collectionインスタンス
-        return view('todo.index', compact('todos'));
+        return view('todo.index', compact('todos', 'user'));
         // return view('todo.index', ['todos' => $this->todo->all()]);
     }
 

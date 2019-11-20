@@ -4,7 +4,7 @@
 @extends ('layouts.app')
 @section ('content')
 
-<h1 class="page-header">ToDo一覧</h1>
+<h1 class="page-header">{{ $user->name }}のToDo一覧</h1>
 <p class="text-right">
 
   {{-- ボタンをクリック、href、uri /todo/createに遷移 --}}
