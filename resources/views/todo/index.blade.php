@@ -8,7 +8,7 @@
 <p class="text-right">
 
   {{-- ボタンをクリック、href、uri /todo/createに遷移 --}}
-  <a class="btn btn-success" href="/todo/create">ToDoを追加</a>
+  <a class="btn btn-success" href="/todo/create">新規作成</a>
 </p>
 <table class="table">
   <thead class="thead-light">
