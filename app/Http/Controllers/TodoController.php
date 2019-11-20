@@ -17,18 +17,18 @@ class TodoController extends Controller
     private $todo;
     private $user;
 
-    public function __construct(Todo $instanceClass, User $UserinstanceClass)
+    public function __construct(Todo $instanceClass, User $userInstanceClass)
     {
         $this->middleware('auth');
         $this->todo = $instanceClass;
-        $this->user = $UserinstanceClass;
+        $this->user = $userInstanceClass;
     }
 
     public function index() 
     {
         $todos = $this->todo->getByUserId(Auth::id());
-        $user = $this->user->getUserByUserId(Auth::id());
-
+        $user = Auth::user();
+        // $user = $this->user->getUserByUserId(Auth::id());
 
         return view('todo.index', compact('todos', 'user'));
     }

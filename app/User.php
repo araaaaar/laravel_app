@@ -28,8 +28,4 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
-    public function getUserByUserId($id)
-    {
-        return $this->where('id', $id)->first();
-    }
 }
